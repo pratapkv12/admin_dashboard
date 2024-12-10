@@ -11,7 +11,6 @@
             font-family: 'Proxima Nova', sans-serif;
             background-color: #f8f8f8;
             color: #333;
-            overflow-x: hidden;
         }
 
         /* Header */
@@ -20,7 +19,7 @@
             color: #333;
             display: flex;
             align-items: center;
-            justify-content: center;
+            justify-content: space-between;
             padding: 10px 20px;
             position: fixed;
             top: 0;
@@ -29,19 +28,16 @@
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             z-index: 1000;
         }
+
         .toggle-sidebar {
-            position: absolute;
-            left: 10px;
             background: none;
             border: none;
             color: #333;
             font-size: 18px;
             cursor: pointer;
-            transition: transform 0.3s ease;
+            display: none; /* Hidden by default */
         }
-        .toggle-sidebar:hover {
-            transform: rotate(90deg);
-        }
+
         .logo {
             font-size: 24px;
             font-weight: bold;
@@ -55,22 +51,25 @@
             height: 100vh;
             position: fixed;
             top: 0;
-            left: -250px;
+            left: 0;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: flex-start;
             padding-top: 70px;
-            transition: transform 0.3s ease;
             z-index: 999;
+            transition: transform 0.3s ease;
         }
-        .sidebar.visible {
-            transform: translateX(250px);
+
+        .sidebar.hidden {
+            transform: translateX(-250px); /* Hidden off-screen */
         }
+
         .sidebar h1 {
             font-size: 22px;
             margin-bottom: 20px;
         }
+
         .sidebar a {
             color: #FFD700;
             text-decoration: none;
@@ -78,19 +77,22 @@
             margin: 10px 0;
             transition: transform 0.3s ease;
         }
+
         .sidebar a:hover {
             transform: translateX(10px);
         }
 
         /* Main Content */
         .main-content {
-            margin-left: 0;
+            margin-left: 250px;
             padding: 80px 20px;
             transition: margin-left 0.3s ease;
         }
-        .main-content.shifted {
-            margin-left: 250px;
+
+        .main-content.full-width {
+            margin-left: 0; /* Adjust for hidden sidebar */
         }
+
         .dashboard-title {
             text-align: center;
             font-size: 24px;
@@ -106,6 +108,7 @@
             justify-content: space-between;
             gap: 20px;
         }
+
         .card {
             flex: 1 1 calc(33.333% - 20px);
             background: rgba(255, 255, 255, 0.8);
@@ -115,15 +118,18 @@
             text-align: center;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
+
         .card:hover {
             transform: translateY(-5px);
             box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
         }
+
         .card h3 {
             margin: 0;
             font-size: 16px;
             color: #333;
         }
+
         .card p {
             font-size: 18px;
             color: #FFD700;
@@ -139,11 +145,13 @@
             margin-top: 30px;
             text-align: center;
         }
+
         .update-section h2 {
             font-size: 18px;
             color: #333;
             margin-bottom: 20px;
         }
+
         .update-section form input,
         .update-section form button {
             padding: 10px 15px;
@@ -152,6 +160,7 @@
             border-radius: 5px;
             font-size: 14px;
         }
+
         .update-section form button {
             background: #FFD700;
             color: #333;
@@ -160,6 +169,7 @@
             cursor: pointer;
             transition: background 0.3s ease;
         }
+
         .update-section form button:hover {
             background: #e0b600;
         }
@@ -172,34 +182,43 @@
             padding: 10px 0;
             margin-top: 20px;
         }
+
         footer a {
             color: #FFD700;
             text-decoration: none;
             margin: 0 5px;
         }
+
         footer a:hover {
             text-decoration: underline;
         }
 
-        /* Responsive */
+        /* Responsive Styles */
+        @media (max-width: 1024px) {
+            .toggle-sidebar {
+                display: block; /* Show toggle button */
+            }
+
+            .sidebar {
+                transform: translateX(-250px); /* Hidden by default */
+            }
+
+            .sidebar.visible {
+                transform: translateX(0); /* Show sidebar */
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+        }
+
         @media (max-width: 768px) {
             .card-container {
                 flex-direction: column;
             }
+
             .card {
                 flex: 1 1 100%;
-            }
-            .dashboard-title {
-                font-size: 20px;
-            }
-            .update-section h2 {
-                font-size: 16px;
-            }
-            .sidebar {
-                transform: translateX(-100%);
-            }
-            .sidebar.visible {
-                transform: translateX(0);
             }
         }
     </style>
@@ -259,7 +278,7 @@
 
         function toggleSidebar() {
             sidebar.classList.toggle('visible');
-            mainContent.classList.toggle('shifted');
+            mainContent.classList.toggle('full-width');
         }
     </script>
 </body>
